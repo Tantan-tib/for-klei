@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf3e6">
+  <title>for klei</title>
+  <meta name="description" content="press play">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="for klei">
+  <meta property="og:description" content="press play">
+  <meta property="og:image" content="https://[username].github.io/[repo-name]/assets/preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://[username].github.io/[repo-name]/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="for klei">
+  <meta name="twitter:description" content="press play">
+  <meta name="twitter:image" content="https://[username].github.io/[repo-name]/assets/preview.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gaegu:wght@400;700&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <!-- one stylesheet per task: base.css (shared tokens, grain, page paper) is owned by the engine task -->
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="book.css">
+  <link rel="stylesheet" href="pages.css">
+  <link rel="stylesheet" href="song.css">
+  <link rel="stylesheet" href="browse.css">
+  <link rel="stylesheet" href="volume.css">
+</head>
+<body>
+  <div id="app">
+    <div id="bg"></div>
+    <div id="book-wrap">            <!-- book.js: the book (StPageFlip mounts inside #book) + cover/lock/tap-to-open overlays -->
+      <div id="book"></div>
+      <div id="book-shield"></div>  <!-- covers the book while input must be ignored (song mode) -->
+      <div id="lock"></div>         <!-- lock tag (book.js / lock UI) -->
+      <div id="cover-note"></div>   <!-- handwritten "tap to open" / "open again" on the closed cover -->
+    </div>
+    <div id="browse-ui"></div>      <!-- browse.js: arrows, page dots, "play our song again" -->
+    <canvas id="confetti-canvas"></canvas>
+    <div id="debug-root"></div>
+
+    <div id="vol">
+      <button id="volBtn" type="button" aria-label="Mute" title="Mute (M)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4H4z"/><path class="waves" d="M15 8.5a5 5 0 0 1 0 7M17.6 5.9a8.7 8.7 0 0 1 0 12.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="cross" d="M15.2 9.2l5 5.6m0-5.6l-5 5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <input id="volSlider" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
+    </div>
+  </div>
+
+  <audio id="song" preload="auto" playsinline></audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <script src="lrc.js"></script>
+  <script src="script.js"></script>   <!-- CONFIG + Book namespace first; orchestrator code at its bottom runs on DOMContentLoaded -->
+  <script src="book.js"></script>     <!-- engine task -->
+  <script src="doodles.js"></script>  <!-- hand-drawn SVG doodle library (doodles task) -->
+  <script src="pages.js"></script>    <!-- browse task: page factory -->
+  <script src="song.js"></script>     <!-- song task -->
+  <script src="browse.js"></script>   <!-- browse task -->
+  <script src="volume.js"></script>
+</body>
+</html>

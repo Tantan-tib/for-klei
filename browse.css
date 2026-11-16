@@ -1,0 +1,55 @@
+/* browse.css — browse mode UI (prev/next arrows, "play our song again") + small-screen tweaks for page contents. */
+
+#browse-ui { position: fixed; inset: 0; z-index: 40; pointer-events: none; display: none; }
+#browse-ui.on { display: block; }
+
+.br-arrow {
+  position: absolute; top: 50%; width: 44px; height: 44px; margin-top: -22px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; pointer-events: auto;
+  color: var(--ink, #4a2f3a); background: rgba(255, 250, 240, .72);
+  box-shadow: 0 1px 4px rgba(90, 50, 60, .25); opacity: .55; transition: opacity .2s ease, transform .2s ease;
+}
+.br-arrow svg { width: 26px; height: 26px; }
+.br-arrow:hover { opacity: 1; }
+.br-arrow:disabled { opacity: 0; pointer-events: none; }
+.br-prev { left: max(10px, env(safe-area-inset-left)); }
+.br-next { right: max(10px, env(safe-area-inset-right)); }
+.br-next svg { transform: scaleX(-1); }
+.br-arrow:focus-visible, .br-replay:focus-visible { outline: 2px dashed var(--pink-deep, #d9577f); outline-offset: 3px; }
+
+/* phones / touch: no arrows (swipe or tap the page), nothing overlapping the book */
+@media (max-width: 700px), (orientation: portrait), (pointer: coarse) { .br-arrow { display: none; } }
+
+/* "play our song again": a small handwritten note */
+.br-replay {
+  appearance: none; border: 0; cursor: pointer; pointer-events: auto;
+  font-family: var(--hand, 'Caveat', cursive); font-weight: 700; color: var(--ink, #4a2f3a);
+  background: rgba(255, 250, 240, .9); padding: .15em .8em .2em; border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(90, 50, 60, .3); transform: rotate(-2deg); position: relative;
+  font-size: max(15px, calc(var(--pw, 400px) * .07));
+}
+.br-replay::before {
+  content: ""; position: absolute; left: 50%; top: -.45em; width: 3.2em; height: .8em; margin-left: -1.6em; transform: rotate(2deg);
+  background: var(--tape-pink, rgba(244, 168, 194, .72));
+  clip-path: polygon(0 10%, 5% 0, 10% 12%, 15% 0, 90% 5%, 95% 0, 100% 14%, 97% 50%, 100% 88%, 94% 100%, 88% 90%, 12% 100%, 5% 92%, 0 100%, 3% 50%);
+}
+.br-replay span { white-space: nowrap; }
+.br-replay:hover { color: var(--pink-deep, #d9577f); }
+.br-slot { margin: 0 auto; }
+/* fallback floating button (only if the engine has no back-cover slot): bottom centre while the back cover is showing */
+.br-float { position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%) rotate(-2deg); display: none; }
+#browse-ui.on-back:not(.has-slot) .br-float { display: block; }
+
+/* ---------- small-screen tweaks for page contents ---------- */
+@media (max-width: 700px), (orientation: portrait) {
+  .pp-cap { font-size: max(calc(var(--u) * 3.8), 11px); }
+  .pg-line { font-size: max(calc(var(--u) * 4.2), 11px); }
+}
+/* tiny landscape phones: pages are small, keep the text readable */
+@media (max-height: 520px) {
+  .pp-cap { font-size: max(calc(var(--u) * 3.6), 8px); }
+  .pg-line { font-size: max(calc(var(--u) * 4), 8px); }
+}
+
+/* single layout: browse.js handles swipes/taps itself (vertical pan stays native for the letter) */
+#book-wrap { touch-action: pan-y; }

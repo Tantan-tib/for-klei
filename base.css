@@ -1,0 +1,103 @@
+/* ===== base.css (engine task): tokens, desk background, paper pages. Shared by every stylesheet. ===== */
+:root {
+  --paper: #fbf3e6;
+  --paper-2: #f4e6d3;
+  --paper-white: #fffdf8;
+  --pink: #f4a8c2;
+  --pink-soft: #fbd3e1;
+  --pink-deep: #d9577f;
+  --ink: #4a2f3a;
+  --ink-soft: #7d5a68;
+  --tape: rgba(255, 224, 150, .78);
+  --tape-pink: rgba(244, 168, 194, .72);
+  --shadow: 90, 50, 60;
+  --hand: "Caveat", "Gaegu", "Segoe Script", "Bradley Hand", cursive;
+  --hand-2: "Gaegu", "Caveat", "Segoe Script", cursive;
+  --type: "Special Elite", "Courier Prime", "Courier New", monospace;
+  --display: "Permanent Marker", "Caveat Brush", "Caveat", "Segoe Script", cursive;
+  --body: var(--hand);
+  /* book-area insets: other stylesheets (browse.css) may override these to reserve room for nav/dots */
+  --book-inset-t: 0px;
+  --book-inset-b: 0px;
+  /* paper grain tile (soft, low contrast) */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .28  0 0 0 0 .25  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.38'/></svg>");
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: #f1e2d2; color: var(--ink);
+  overflow: hidden; overscroll-behavior: none;
+  font-family: var(--hand);
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+}
+
+#app {
+  position: fixed; inset: 0;
+  width: 100%; height: 100vh; height: 100dvh;
+  overflow: hidden;
+}
+
+/* the desk the book lies on: warm paper-pink with a soft vignette and fine grain */
+#bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(255, 250, 241, .95) 0%, rgba(250, 238, 224, .85) 38%, rgba(236, 211, 193, .9) 78%, rgba(222, 190, 176, 1) 100%),
+    #f1e2d2;
+}
+#bg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--grain); background-size: 180px 180px; opacity: .55; mix-blend-mode: multiply;
+}
+
+/* ---------- paper pages (page factory pages carry class "page") ---------- */
+.page {
+  --spine: none;
+  --edge: none;
+  position: relative;
+  overflow: hidden;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    var(--spine),
+    var(--edge),
+    var(--grain),
+    radial-gradient(ellipse at 48% 38%, rgba(255, 255, 255, .6) 0%, rgba(255, 255, 255, 0) 62%),
+    linear-gradient(172deg, rgba(190, 150, 110, 0) 55%, rgba(190, 150, 110, .09) 100%);
+  background-size: auto, auto, 180px 180px, auto, auto;
+  /* slightly uneven, hand-cut corners */
+  border-radius: 2px 4px 3px 2px / 3px 2px 4px 2px;
+  box-shadow: inset 0 0 0 1px rgba(150, 110, 80, .10), inset 0 0 22px rgba(150, 110, 80, .08);
+}
+/* spine shadow: the inner edge of every page darkens towards the gutter (classes set by the engine, double layout) */
+.page.pg-l {
+  --spine:
+    linear-gradient(to left, rgba(70, 38, 46, .34) 0, rgba(70, 38, 46, .13) 2.2%, rgba(70, 38, 46, .05) 7%, rgba(70, 38, 46, 0) 15%);
+  --edge: linear-gradient(to right, rgba(150, 110, 80, .10) 0, rgba(150, 110, 80, 0) 2.5%);
+  border-radius: 4px 1px 1px 4px / 4px 1px 1px 3px;
+}
+.page.pg-r {
+  --spine:
+    linear-gradient(to right, rgba(70, 38, 46, .34) 0, rgba(70, 38, 46, .13) 2.2%, rgba(70, 38, 46, .05) 7%, rgba(70, 38, 46, 0) 15%);
+  --edge: linear-gradient(to left, rgba(150, 110, 80, .10) 0, rgba(150, 110, 80, 0) 2.5%);
+  border-radius: 1px 4px 3px 1px / 1px 3px 4px 1px;
+}
+/* single-page layout: gutter on the left of every page */
+.page.pg-s {
+  --spine: linear-gradient(to right, rgba(70, 38, 46, .26) 0, rgba(70, 38, 46, .10) 2.5%, rgba(70, 38, 46, 0) 10%);
+  border-radius: 1px 4px 3px 1px / 1px 3px 4px 1px;
+}
+.page.cover { background-image: none; box-shadow: none; border-radius: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}
+
+/* ===== faint sketches on the desk (doodles.js) ===== */
+.bg-doodles { position: absolute; inset: 0; pointer-events: none; opacity: .12; overflow: hidden; }
+.bg-dd { position: absolute; overflow: visible; }
+.bg-dd path { stroke-linecap: round; stroke-linejoin: round; }
+.bg-dd path.pf { stroke: none; }
+.bg-dd path.tp { display: none; }
+@media (max-width: 520px) { .bg-doodles { opacity: .09; } }

@@ -1,0 +1,47 @@
+/* ===================== volume (desktop only, small paper tag) ===================== */
+#vol { display: none; }
+
+@media (hover: hover) and (pointer: fine) and (min-width: 701px) {
+  #vol {
+    display: flex; align-items: center; gap: 0;
+    position: absolute; z-index: 20;
+    right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
+    padding: 4px; border-radius: 999px;
+    background: rgba(255, 253, 248, .85); border: 1.5px dashed rgba(217, 87, 127, .45); rotate: -1.5deg;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .6s ease, background .25s ease, border-color .25s ease;
+  }
+  #vol.on { opacity: .6; visibility: visible; pointer-events: auto; }
+  #vol:hover, #vol:focus-within { opacity: 1; background: var(--paper-white, #fffdf8); border-color: var(--pink-deep, #d9577f); }
+
+  #volBtn {
+    appearance: none; border: 0; background: none; padding: 0; margin: 0; cursor: pointer;
+    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--ink, #4a2f3a);
+  }
+  #volBtn:hover { color: var(--pink-deep, #d9577f); }
+  #volBtn:focus-visible { outline: 2px solid var(--pink-deep, #d9577f); outline-offset: 1px; }
+  #volBtn svg { width: 18px; height: 18px; fill: currentColor; }
+  #vol .waves { display: inline; }
+  #vol .cross { display: none; }
+  #vol.muted .waves { display: none; }
+  #vol.muted .cross { display: inline; }
+
+  #volSlider {
+    -webkit-appearance: none; appearance: none; background: none; cursor: pointer;
+    width: 0; height: 18px; margin: 0; padding: 0; opacity: 0;
+    transition: width .25s ease, opacity .25s ease, margin .25s ease;
+  }
+  #vol:hover #volSlider, #vol:focus-within #volSlider { width: 92px; margin: 0 8px 0 4px; opacity: 1; }
+  #volSlider::-webkit-slider-runnable-track {
+    height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--pink-deep, #d9577f) var(--v, 80%), rgba(217, 87, 127, .22) var(--v, 80%));
+  }
+  #volSlider::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(217, 87, 127, .22); }
+  #volSlider::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--pink-deep, #d9577f); }
+  #volSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 12px; height: 12px; margin-top: -4px; border-radius: 50%;
+    background: var(--pink-deep, #d9577f); box-shadow: 0 1px 2px rgba(90, 50, 60, .35); border: 2px solid #fffdf8;
+  }
+  #volSlider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--pink-deep, #d9577f); box-shadow: 0 1px 2px rgba(90, 50, 60, .35); border: 2px solid #fffdf8; }
+  #volSlider:focus-visible { outline: 2px solid var(--pink-deep, #d9577f); outline-offset: 3px; border-radius: 4px; }
+}

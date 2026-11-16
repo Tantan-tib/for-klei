@@ -1,0 +1,109 @@
+/* ===================== letter (bottom of the center column; outside #stage so it never shakes) ===================== */
+#letter-root {
+  position: absolute; z-index: 5;
+  left: var(--col-side); width: var(--col-mid);
+  top: var(--ly-h); bottom: 0;
+  padding: 0 2.5% max(10px, env(safe-area-inset-bottom)) 2.5%;
+  pointer-events: none;
+  opacity: 0; visibility: hidden;
+  transform-origin: 50% 0; transform: perspective(900px) rotateX(-28deg) scaleY(.5);
+  transition: opacity 1.4s ease, transform 1.6s cubic-bezier(.2, .8, .2, 1), visibility 0s linear 1.4s, bottom .9s ease;
+}
+#letter-root.open { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+.lt-paper {
+  position: relative; height: 100%;
+  display: flex; flex-direction: column;
+  color: var(--ink, #4a2f3a);
+  background:
+    var(--tex, none),
+    repeating-linear-gradient(0deg, rgba(217,87,127,.16) 0 1px, transparent 1px 29px),
+    linear-gradient(90deg, transparent 0 11px, rgba(217,87,127,.22) 11px 12px, transparent 12px),
+    #fffaf0;
+  /* slightly torn / uneven edges */
+  clip-path: polygon(0.00% 0.62%, 2.50% 0.58%, 5.00% 1.07%, 7.50% 1.08%, 10.00% 0.91%, 12.50% 0.59%, 15.00% 0.32%, 17.50% 1.29%, 20.00% 0.96%, 22.50% 1.05%, 25.00% 0.53%, 27.50% 0.54%, 30.00% 0.80%, 32.50% 0.60%, 35.00% 0.66%, 37.50% 0.45%, 40.00% 1.12%, 42.50% 0.49%, 45.00% 0.51%, 47.50% 0.83%, 50.00% 0.22%, 52.50% 0.56%, 55.00% 0.46%, 57.50% 0.39%, 60.00% 0.61%, 62.50% 1.25%, 65.00% 0.80%, 67.50% 0.92%, 70.00% 0.48%, 72.50% 0.77%, 75.00% 0.67%, 77.50% 0.89%, 80.00% 0.48%, 82.50% 0.35%, 85.00% 1.10%, 87.50% 0.45%, 90.00% 0.64%, 92.50% 0.75%, 95.00% 1.16%, 97.50% 1.06%, 100.00% 1.00%, 98.87% 4.00%, 99.59% 8.00%, 99.62% 12.00%, 99.40% 16.00%, 99.03% 20.00%, 98.88% 24.00%, 99.64% 28.00%, 99.02% 32.00%, 99.30% 36.00%, 99.72% 40.00%, 98.93% 44.00%, 98.84% 48.00%, 99.65% 52.00%, 99.59% 56.00%, 99.53% 60.00%, 99.60% 64.00%, 98.82% 68.00%, 99.30% 72.00%, 99.14% 76.00%, 99.60% 80.00%, 98.83% 84.00%, 99.29% 88.00%, 98.82% 92.00%, 99.38% 96.00%, 100.00% 98.65%, 97.50% 98.73%, 95.00% 98.97%, 92.50% 99.34%, 90.00% 98.62%, 87.50% 99.78%, 85.00% 98.94%, 82.50% 98.55%, 80.00% 99.40%, 77.50% 99.46%, 75.00% 98.62%, 72.50% 99.67%, 70.00% 98.36%, 67.50% 98.53%, 65.00% 99.63%, 62.50% 98.95%, 60.00% 99.14%, 57.50% 98.31%, 55.00% 98.94%, 52.50% 98.94%, 50.00% 99.63%, 47.50% 98.72%, 45.00% 98.79%, 42.50% 99.51%, 40.00% 99.24%, 37.50% 98.72%, 35.00% 98.86%, 32.50% 99.30%, 30.00% 98.36%, 27.50% 98.47%, 25.00% 98.33%, 22.50% 99.67%, 20.00% 98.57%, 17.50% 99.62%, 15.00% 99.03%, 12.50% 99.17%, 10.00% 98.84%, 7.50% 99.22%, 5.00% 98.95%, 2.50% 98.85%, 0.00% 99.42%, 0.22% 96.00%, 0.88% 92.00%, 0.58% 88.00%, 1.14% 84.00%, 0.97% 80.00%, 0.52% 76.00%, 0.63% 72.00%, 0.27% 68.00%, 0.64% 64.00%, 0.64% 60.00%, 0.86% 56.00%, 0.95% 52.00%, 0.40% 48.00%, 0.96% 44.00%, 0.92% 40.00%, 0.94% 36.00%, 0.47% 32.00%, 0.89% 28.00%, 0.57% 24.00%, 1.20% 20.00%, 0.67% 16.00%, 0.31% 12.00%, 0.70% 8.00%, 0.22% 4.00%);
+  overflow: hidden;
+  pointer-events: auto;
+}
+/* the paper is clipped, so the soft shadow goes on the root */
+#letter-root { filter: drop-shadow(1px 4px 5px rgba(var(--shadow, 90, 50, 60), .35)); }
+/* masking tape strip across the top (replaces the old ribbon emoji) */
+.lt-ribbon { flex: none; position: relative; height: 24px; }
+.lt-ribbon::before {
+  content: ""; position: absolute; left: 50%; top: 5px; width: 76px; height: 18px; margin-left: -38px;
+  background: var(--tape-pink, rgba(244,168,194,.72)); transform: rotate(-2.5deg);
+  clip-path: polygon(0 10%, 5% 0, 10% 12%, 15% 0, 90% 5%, 95% 0, 100% 14%, 97% 50%, 100% 88%, 94% 100%, 88% 90%, 12% 100%, 5% 92%, 0 100%, 3% 50%);
+}
+
+.lt-body {
+  flex: 1 1 auto; min-height: 0;
+  overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px clamp(16px, 6%, 30px) 18px;
+  font-family: var(--hand, 'Caveat', 'Segoe Script', cursive);
+  font-weight: 500;
+  color: var(--ink, #4a2f3a);
+  font-size: clamp(18px, calc(var(--colw, 200) * .05px), 27px);
+  line-height: 1.32;
+  scrollbar-width: thin; scrollbar-color: rgba(217, 87, 127, .45) transparent;
+  outline: none; position: relative;
+}
+.lt-body::-webkit-scrollbar { width: 6px; }
+.lt-body::-webkit-scrollbar-thumb { background: rgba(217, 87, 127, .4); border-radius: 3px; }
+
+.lt-text { white-space: pre-wrap; overflow-wrap: break-word; }
+.lt-rest { color: transparent; user-select: none; }        /* untyped remainder keeps the layout stable (no mid-word re-wrapping) */
+.lt-cursor { position: relative; display: inline-block; width: 0; height: 1em; vertical-align: text-bottom; }
+.lt-cursor::after {
+  content: ""; position: absolute; left: 1px; top: .08em; width: 2px; height: .95em; border-radius: 1px;
+  background: var(--pink-deep, #d9577f);
+  animation: ltBlink 1s steps(2, start) infinite;
+}
+@keyframes ltBlink { 50% { opacity: 0; } }
+
+/* ---- removal: paper folds up into a small envelope with a heart seal, which floats up and fades ---- */
+.lt-env {
+  position: absolute; left: 50%; top: 50%; width: 112px; height: 78px; margin: -39px 0 0 -56px;
+  opacity: 0; pointer-events: none;
+  border-radius: 3px; background: #fbd3e1; border: 1.5px solid #e8a3bb;
+  box-shadow: 1px 4px 8px rgba(90, 50, 60, .3);
+}
+.lt-env::before {                          /* flap */
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 58%;
+  background: #f4a8c2; clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.lt-env::after {                           /* heart seal */
+  content: "\2665"; position: absolute; left: 50%; top: 46%; width: 28px; height: 28px; margin: -14px 0 0 -14px;
+  display: grid; place-items: center; font-size: 17px; line-height: 1; color: #fff; border-radius: 50%;
+  background: var(--pink-deep, #d9577f); box-shadow: 0 1px 2px rgba(90, 50, 60, .35);
+}
+#letter-root.fold .lt-paper { pointer-events: none; animation: ltFold 3.4s cubic-bezier(.55, 0, .35, 1) forwards; }
+#letter-root.fold .lt-env { animation: ltEnv 3.4s ease-in-out forwards; }
+@keyframes ltFold {
+  0%   { transform: none; opacity: 1; }
+  30%  { transform: perspective(700px) rotateX(35deg) scale(.95, .5); opacity: 1; }
+  58%  { transform: scale(.22, .17); opacity: 1; }
+  72%  { transform: scale(.12, .08); opacity: 0; }
+  100% { transform: scale(.1, .06); opacity: 0; }
+}
+@keyframes ltEnv {
+  0%, 52% { opacity: 0; transform: scale(.4); }
+  64%     { opacity: 1; transform: scale(1.08); }
+  72%     { opacity: 1; transform: scale(1) translateY(0); }
+  100%    { opacity: 0; transform: scale(.9) translateY(-42vh) rotate(7deg); }
+}
+#letter-root.gone { visibility: hidden !important; opacity: 0; transition: none; }
+#letter-root.gone .lt-paper, #letter-root.gone .lt-env { animation: none; }
+
+@media (max-width: 700px), (orientation: portrait) {
+  .lt-body { font-size: clamp(17px, calc(var(--colw, 200) * .075px), 22px); line-height: 1.25; padding-left: 12px; padding-right: 12px; }
+  .lt-ribbon { height: 20px; }
+  .lt-ribbon::before { top: 3px; width: 62px; margin-left: -31px; height: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #letter-root { transition: opacity .3s linear, bottom 0s; transform: none; }
+  #letter-root.fold .lt-paper { animation: ltFadeOut 1s forwards; }
+  #letter-root.fold .lt-env { display: none; }
+  .lt-cursor::after { animation: none; }
+}
+@keyframes ltFadeOut { to { opacity: 0; } }

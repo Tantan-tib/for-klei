@@ -1,0 +1,26 @@
+/* song.css — live layers written by song.js: floating lyric layer, confetti canvas, debug readout.
+   Page furniture (paper, letter, margin strip, montage frame ...) lives in pages.css. */
+
+#confetti-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 60; }
+
+/* ---- floating lyrics: a click-through layer on the desk, between #bg and the book (song.js places the lines in the free space around the book) ---- */
+#lyric-float { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity 1.2s ease; }
+#lyric-float.on { opacity: 1; }
+.fl-line {
+  position: absolute; left: 0; top: 0; margin: 0; padding: 0; text-align: center; will-change: transform, opacity;
+  font-family: var(--hand); font-weight: 700; line-height: 1.12; letter-spacing: .01em; transform-origin: 50% 55%;
+  text-shadow: 0 0 5px rgba(255, 253, 248, .95), 0 0 12px rgba(255, 253, 248, .85), 0 1px 0 rgba(255, 253, 248, .9);
+}
+.fl-w { display: inline-block; padding: 0 .06em; }
+.fl-w.pink { color: #d9577f; }
+.fl-drop, .fl-chorus { letter-spacing: .03em; }
+
+/* ---- debug readout (?debug) ---- */
+#song-debug {
+  position: fixed; left: 6px; top: 4px; z-index: 9999; padding: 2px 8px; border-radius: 6px; pointer-events: none;
+  font: 12px/1.3 ui-monospace, Consolas, monospace; color: #fff; background: rgba(60, 30, 40, .65);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #lyric-float { transition-duration: .4s; }
+}

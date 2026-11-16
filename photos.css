@@ -1,0 +1,94 @@
+/* photos.css — scrapbook photo columns: printed photos with white borders, washi tape, doodles (classes prefixed .ph-)
+   DOM per photo (see photos.js mkNode/assign):
+     .ph-node [data-photo=i] [style --pad, --padb] .tp-0..4 .tc-0..2   white polaroid frame (width/height set inline; thick bottom border = --padb)
+       .ph-glow    soft beat halo (opacity driven by JS)
+       .ph-img     the photo (absolute, left/top = --pad)
+       .ph-tape.a, .ph-tape.b   masking tape pieces (visibility/position per .tp-N)
+       .ph-doodle  hand-drawn svg doodle (only on some photos; has .dd-0..3 kind and .dp-0..3 position classes, else display:none) */
+#photos-root { position: absolute; inset: 0; overflow: hidden; pointer-events: none; contain: layout paint; }
+
+.ph-bg { position: absolute; inset: 0; overflow: hidden; }
+.ph-bokeh {
+  /* tiles every 100% of the viewport height (see photos.js); moves down at ~0.3x the column speed. Faint pink paper dots. */
+  position: absolute; left: 0; right: 0; top: -100%; height: 200%;
+  background-repeat: repeat-y;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(244,168,194,.16) 0 2.2%, transparent 2.5%),
+    radial-gradient(circle at 78% 14%, rgba(217,87,127,.10) 0 2.8%, transparent 3.1%),
+    radial-gradient(circle at 62% 46%, rgba(244,168,194,.14) 0 1.8%, transparent 2.1%),
+    radial-gradient(circle at 10% 70%, rgba(217,87,127,.09) 0 2.4%, transparent 2.7%),
+    radial-gradient(circle at 88% 82%, rgba(244,168,194,.15) 0 2%, transparent 2.3%),
+    radial-gradient(circle at 40% 92%, rgba(255,236,200,.4) 0 1.6%, transparent 1.9%);
+  will-change: transform;
+}
+
+/* columns: width follows --col-side (set by style.css); fallback 30% desktop / 25% portrait or <=700px */
+.ph-col { position: absolute; top: 0; bottom: 0; width: var(--col-side, 30%); overflow: hidden; contain: layout paint; }
+.ph-left { left: 0; }
+.ph-right { right: 0; }
+@media (max-width: 700px), (orientation: portrait) {
+  .ph-col, .ph-shade { width: var(--col-side, 25%); }
+}
+
+/* cream fade on the INNER edges so the center text stays readable */
+.ph-shade { position: absolute; top: 0; bottom: 0; width: var(--col-side, 30%); }
+.ph-shade-l { left: 0;  background: linear-gradient(to right, rgba(251,243,230,0) 40%, rgba(251,243,230,.22) 100%); }
+.ph-shade-r { right: 0; background: linear-gradient(to left,  rgba(251,243,230,0) 40%, rgba(251,243,230,.22) 100%); }
+
+.ph-node {
+  position: absolute; left: 50%; top: 0;
+  background: var(--paper-white, #fffdf8);
+  border-radius: 1px;
+  box-shadow: 0 5px 11px rgba(var(--shadow, 90, 50, 60), .3), 0 1px 3px rgba(var(--shadow, 90, 50, 60), .25);
+  backface-visibility: hidden;
+  opacity: 0;
+}
+.ph-glow {
+  position: absolute; inset: 0; border-radius: 1px; opacity: 0; will-change: opacity;
+  box-shadow: 0 0 0 2px rgba(244,168,194,.55), 0 0 14px 3px rgba(244,168,194,.5);
+}
+.ph-img {
+  position: absolute; display: block; object-fit: fill; /* box matches natural aspect: never cropped */
+  background: #efe0d4; opacity: 0; transition: opacity .35s ease-out;
+  -webkit-user-drag: none; user-select: none;
+}
+.ph-img.ph-ready { opacity: 1; }
+
+/* ---- masking tape ---- */
+.ph-tape {
+  position: absolute; display: none; z-index: 2; pointer-events: none;
+  width: 34%; max-width: 74px; min-width: 34px; height: 15px;
+  background: var(--tape, rgba(255,224,150,.78));
+  box-shadow: 0 1px 2px rgba(var(--shadow, 90, 50, 60), .22);
+  clip-path: polygon(0 8%, 4% 0, 9% 10%, 14% 0, 91% 4%, 96% 0, 100% 12%, 97% 52%, 100% 90%, 94% 100%, 88% 92%, 12% 100%, 5% 94%, 0 100%, 3% 50%);
+}
+.tc-1 .ph-tape { background: var(--tape-pink, rgba(244,168,194,.72)); }
+.tc-2 .ph-tape { background: rgba(250, 244, 228, .85); }
+/* variants: where the tape sits + how crooked */
+.tp-0 .ph-tape.a { display: block; top: -8px; left: 50%; margin-left: -17%; transform: rotate(-4deg); }
+.tp-1 .ph-tape.a { display: block; top: -4px; left: -14px; transform: rotate(-38deg); }
+.tp-1 .ph-tape.b { display: block; bottom: -3px; right: -14px; transform: rotate(-36deg); }
+.tp-2 .ph-tape.a { display: block; top: -6px; left: -12px; transform: rotate(-42deg); }
+.tp-3 .ph-tape.a { display: block; top: -4px; right: -15px; transform: rotate(34deg); }
+.tp-3 .ph-tape.b { display: block; top: -9px; left: 8%; transform: rotate(7deg); width: 24%; }
+.tp-4 .ph-tape.a { display: block; top: -5px; left: -13px; transform: rotate(-33deg); }
+.tp-4 .ph-tape.b { display: block; top: -5px; right: -13px; transform: rotate(40deg); }
+
+/* ---- doodles (only photos that get one have .dd-N) ---- */
+.ph-doodle {
+  position: absolute; display: none; z-index: 3; pointer-events: none;
+  width: 26px; height: 26px; overflow: visible;
+}
+.ph-doodle svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.ph-doodle path { fill: none; stroke: var(--pink-deep, #d9577f); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ph-doodle .f { fill: rgba(244,168,194,.55); }
+.ph-doodle.dd-0, .ph-doodle.dd-1, .ph-doodle.dd-2, .ph-doodle.dd-3 { display: block; }
+.ph-doodle.dd-2 { width: 34px; height: 22px; }
+.ph-doodle.dp-0 { top: -17px; right: -11px; transform: rotate(12deg); }
+.ph-doodle.dp-1 { top: -15px; left: -10px; transform: rotate(-14deg); }
+.ph-doodle.dp-2 { top: 34%; right: -17px; transform: rotate(8deg); }
+.ph-doodle.dp-3 { top: 30%; left: -18px; transform: rotate(-10deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-img { transition: none; }
+}

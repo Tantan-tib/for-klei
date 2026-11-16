@@ -1,0 +1,9 @@
+/* photo captions (handwritten, on the polaroid's bottom strip) */
+.ph-node .ph-cap {
+  position: absolute; left: 6%; right: 6%; bottom: 1px;
+  text-align: center; white-space: normal; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  font-family: var(--hand, 'Caveat', cursive); font-weight: 700;
+  font-size: clamp(11px, 2.4vw, 18px); line-height: 1;
+  color: #5b3f47; pointer-events: none; transform: rotate(-1deg);
+}
+.ph-node .ph-cap:empty { display: none; }

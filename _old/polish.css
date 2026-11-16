@@ -1,0 +1,11 @@
+/* phone landscape hint */
+#rotate-hint { display: none; }
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 500px) {
+  #rotate-hint {
+    display: block; position: fixed; left: 50%; bottom: 8px; transform: translateX(-50%) rotate(-2deg);
+    z-index: 9999; pointer-events: none; white-space: nowrap;
+    font-family: var(--hand, 'Caveat', cursive); font-weight: 700; font-size: 20px;
+    color: #7a4a58; background: rgba(255, 246, 232, 0.92); padding: 2px 14px;
+    border-radius: 3px; box-shadow: 0 1px 4px rgba(90, 50, 60, 0.25);
+  }
+}

@@ -1,0 +1,51 @@
+/* outro.css — month-N line under HAPPY MONTHSARY, confetti canvas, ending photo heart, days-together counter.
+   Colors/fonts come from the shared paper palette vars when present (fallbacks otherwise). */
+
+/* ---- "month N" under the big drop text (grows a bit while the text shrinks to the top, so it stays readable) ---- */
+.mom .mom-sub {
+  display: block; margin-top: .12em;
+  font-family: var(--hand, "Caveat", "Gaegu", "Nanum Pen Script", "Segoe Print", cursive);
+  font-weight: 700; font-size: max(20px, calc(.3em * (1 + var(--sh, 0) * .8))); margin-bottom: .2em;
+  line-height: 1.05; letter-spacing: .02em; text-transform: none; text-shadow: none;
+  transform: rotate(-2deg);
+}
+
+/* ---- confetti canvas (created by confetti.js, above the stage so drop-shakes don't move it) ---- */
+.cf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 25; pointer-events: none; }
+
+/* ---- ending: taped photos arranged in a heart, behind the final message ---- */
+#outro-heart { pointer-events: none; overflow: hidden; }
+#outro-heart .oh-wrap { position: absolute; inset: 0; will-change: transform; }
+#outro-heart .oh-ph {
+  position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity;
+  background: var(--paper, #fffaf0);
+  box-shadow: 0 1px 2px rgba(90, 58, 68, .28), 0 6px 14px rgba(90, 58, 68, .2);
+  border-radius: 1px 2px 1px 2px;
+}
+#outro-heart .oh-img { position: absolute; display: block; object-fit: cover; background: #e9d9d3; user-select: none; -webkit-user-drag: none; }
+#outro-heart .oh-tape {
+  position: absolute; z-index: 1; display: block;
+  box-shadow: 0 1px 2px rgba(90, 58, 68, .1);
+}
+#outro-heart .oh-tape.pink  { background: rgba(244, 166, 192, .72); }
+#outro-heart .oh-tape.cream { background: rgba(255, 238, 205, .82); }
+/* torn tape ends */
+#outro-heart .oh-tape.j1 { clip-path: polygon(0 10%, 5% 0, 9% 12%, 14% 2%, 100% 4%, 96% 28%, 100% 50%, 95% 78%, 100% 100%, 8% 97%, 0 84%, 4% 60%, 0 36%, 5% 22%); }
+#outro-heart .oh-tape.j2 { clip-path: polygon(0 3%, 100% 0, 97% 22%, 100% 44%, 95% 70%, 100% 92%, 94% 100%, 0 96%, 4% 72%, 0 50%, 5% 26%); }
+
+/* ---- "[X] days together" + ticking clock (lives inside #final, under the message) ---- */
+.oc {
+  --oc-ink: var(--ink, inherit);
+  margin-top: .45em; font-family: var(--hand, "Caveat", "Gaegu", "Nanum Pen Script", "Segoe Print", cursive);
+  font-weight: 700; text-transform: none; letter-spacing: .01em; line-height: 1.1;
+  text-shadow: none; font-variant-numeric: tabular-nums;
+}
+.oc-days { font-size: 1.35em; opacity: 0; transform: rotate(-1.2deg); }
+.oc-num { color: var(--pink-deep, #d9577f); font-size: 1.15em; display: inline-block; min-width: 1ch; }
+.oc-clock { margin-top: .15em; font-size: 1.1em; opacity: 0; transform: rotate(.8deg); white-space: nowrap; }
+.oc-n { display: inline-block; min-width: 1.15em; text-align: right; }
+.oc-u { font-size: .75em; opacity: .75; margin-left: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #outro-heart .oh-wrap { transform: none !important; }
+}
