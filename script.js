@@ -25,11 +25,11 @@ const CONFIG = {
   letter: {
     src: "letter/letter.txt",
     typeStart: 2,          // seconds of song time after which typing begins
-    charsPerSec: 35,       // typing speed (same as before)
+    charsPerSec: 45,       // typing speed (was 35; raised so the longer letter finishes with time to read it)
     commaPause: 0.25,
     periodPause: 0.65,
     paragraphPause: 0.95,
-    holdAfterTyped: 30     // the letter stays this long after it finishes typing, then the book flips on.
+    holdAfterTyped: 12     // the letter stays this long after it finishes typing, then the book flips on.
                            // A fixed anchor (birthdayAt) wins if it comes first: the wait is then shortened (the planner logs it).
   },
 
